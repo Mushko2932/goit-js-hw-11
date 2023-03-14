@@ -1,30 +1,37 @@
 import { getRefs } from './get-refs';
+import simpleLightbox from 'simplelightbox';
 
 const refs = getRefs();
 
 export function createMarkup(images) {
-    const markup = images.map(
+    const markup = images
+      .map(
         img => {
-            `<div class="photo-card">
-                 <img src="" alt="" loading="lazy" />
-                    <div class="info">
-                        <p class="info-item">
-                            <b>Likes</b>
-                        </p>
-                        <p class="info-item">
-                            <b>Views</b>
-                        </p>
-                        <p class="info-item">
-                            <b>Comments</b>
-                        </p>
-                        <p class="info-item">
-                            <b>Downloads</b>
-                        </p>
-                    </div>
-            </div>`
+            `<a href="${img.largeImageURL}">
+                <div class="photo-card">
+                    <img src="${img.webformatURL}" alt="${img.tags}" loading="lazy" />
+                        <div class="info">
+                            <p class="info-item">
+                                <b>Likes</b>${img.likes}
+                            </p>
+                            <p class="info-item">
+                                <b>Views</b>${img.views}
+                            </p>
+                            <p class="info-item">
+                                <b>Comments</b>${img.comments}
+                            </p>
+                            <p class="info-item">
+                                <b>Downloads</b>${img.downloads}
+                            </p>
+                        </div>
+                </div>;
+            </a>`;
         }
-    ).join('');
+    )
+    .join('');
 
     refs.gallery.insertAdjacentHTML('beforeend', markup);
-    refs.gallery.innerHTML = '';
+
+    simpleLightbox.refresh();
 }
+
