@@ -1,8 +1,8 @@
 import { getRefs } from './get-refs';
 
-// const refs = getRefs();
+const refs = getRefs();
 
-export function createMarkup() {
+export function createMarkup(images) {
     const markup = images.map(
         img => {
             `<div class="photo-card">
@@ -26,4 +26,5 @@ export function createMarkup() {
     ).join('');
 
     refs.gallery.insertAdjacentHTML('beforeend', markup);
+    refs.gallery.innerHTML = '';
 }

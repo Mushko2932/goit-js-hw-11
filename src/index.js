@@ -1,18 +1,32 @@
-const axios = require('axios');
+import axios from 'axios';
 import { fetchImages } from './fetch-images';
 import { getRefs } from './get-refs';
-import {markup} from './markup';
+import { createMarkup } from './markup';
 import './css/styles.css';
+import Notiflix from 'notiflix';
 
-fetchImages();
 
 const refs = getRefs();
 
-refs.input.addEventListener('input', onInput);
+refs.form.addEventListener('submit', onSubmit);
+refs.btn.addEventListener('click', onBtnClick);
 
-function onInput(e) {
+function onSubmit(e) {
     e.preventDefault();
-    createMarkup();
+
+  const search = e.target.elements.searchQuery.value;
+
+    fetchImages();
+
+    if (e.target.value === []) {
+        Notiflix.Notify.failure(
+          'Sorry, there are no images matching your search query. Please try again.'
+        );
+    }
+}
+
+function onBtnClick(e) {
+  fetchImages();
 }
 
 
