@@ -2,8 +2,8 @@ export function getRefs() {
     return {
       form: document.querySelector('.search-form'),
       input: document.querySelector('input'),
-      btn: document.querySelector('button[type = "submit"]'),
+      btn: document.querySelector('button'),
       gallery: document.querySelector('.gallery'),
-      btnMore: document.querySelector('.load-more'),
+      btnShowMore: document.querySelector('.load-more'),
     };
 };
