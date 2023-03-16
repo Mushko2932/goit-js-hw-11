@@ -3,6 +3,12 @@ import simpleLightbox from 'simplelightbox';
 
 const refs = getRefs();
 
+const lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 300,
+  enableKeyboard: true,
+});
+
 export function createMarkup(images) {
   const markup = images.hits
     .map(
@@ -14,10 +20,12 @@ export function createMarkup(images) {
         views,
         comments,
         downloads,
-      }) => 
+      }) =>
         `<a class="gallery-item" href="${largeImageURL}">
             <div class="photo-card">
+            <div class="photo-box">
                 <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+            </div>
                   <div class="info">
                     <p class="info-text"><b>Likes</b> ${likes}</p>
                     <p class="info-text"><b>Views</b> ${views}</p>
@@ -31,6 +39,8 @@ export function createMarkup(images) {
 
   refs.gallery.insertAdjacentHTML('beforeend', markup);
 
-  simpleLightbox.refresh();
+  lightbox.refresh();
 }
+
+
 
