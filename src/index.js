@@ -1,9 +1,9 @@
 import { getRefs } from './get-refs';
 import { createMarkup } from './markup';
 import Notiflix from 'notiflix';
-import {ImgApiService} from './fetch-images';
+import { imgApiService } from './fetch-images';
+import { lightbox } from './simplelightbox';
 import './css/styles.css';
-import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const refs = getRefs();
 
@@ -11,48 +11,51 @@ refs.btnShowMore.style.display = 'none';
 refs.form.addEventListener('submit', onFormSubmit);
 refs.btnShowMore.addEventListener('click', onShowMore);
 
-const imgApiService = new ImgApiService();
-// const currentPage = imgApiService.page;
-// imgApiService.hits = data.totalHits;
-
-function onFormSubmit(e) {
+async function onFormSubmit(e) {
   e.preventDefault();
 
   clearGallery();
   imgApiService.query = e.target.searchQuery.value.trim();
 
-  if (imgApiService.query === '') {
+  if (!imgApiService.query) {
     Notiflix.Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
     );
     return;
-  };  
+  }
 
-  imgApiService.resetPage();
-  imgApiService
-    .fetchImages()
-    .then(createImgMarkup)
-    .then(
-      showNotifications()
-    );
+  try {
+    imgApiService.resetPage();
+    const { hits, totalHits, total } = await imgApiService.fetchImages();
+    createMarkup(hits);
+    lightbox.refresh();
+    showNotifications();
+  } catch (error) {
+    console.log('error :>> ', error);
+  }
 
   refs.btnShowMore.style.display = 'block';
 }
 
-function onShowMore() {
-  imgApiService.fetchImages().then(createImgMarkup).then(showNotifications());
-}
-
-function createImgMarkup(data) {
-  refs.gallery.insertAdjacentHTML('beforeend', createMarkup(data));
+async function onShowMore() {
+  try {
+    const { hits, totalHits, total } = await imgApiService.fetchImages();
+    createMarkup(hits);
+    lightbox.refresh();
+    showNotifications();
+  } catch (error) {
+    console.log('error :>> ', error);
+  }
 }
 
 function clearGallery() {
   refs.gallery.innerHTML = '';
 }
 
-function showNotifications(data) {
+async function showNotifications(data) {
   // refs.btnShowMore.style.display = 'none';
+
+  const { hits, totalHits, total } = await imgApiService.fetchImages();
 
   imgApiService.fetchImages().then(data => {
     const curentPage = imgApiService.page - 1;
@@ -77,6 +80,6 @@ function showNotifications(data) {
         "We're sorry, but you've reached the end of search results."
       );
     }
-    createImgMarkup(data.hits);
+    createMarkup(hits);
   });
 }

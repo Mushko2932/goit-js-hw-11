@@ -20,13 +20,10 @@ export class ImgApiService {
       per_page: 40,
     });
 
-    try {
-      const response = await axios.get(`${BASE_URL}?${OPTIONS.toString()}`);
+      const response = await axios(`${BASE_URL}?${OPTIONS.toString()}`);
       this.incrementPage();
       return response.data;
-    } catch (error) {
-      console.log('error :>> ', error);
-    }
+    
   }
 
   get query() {
@@ -53,3 +50,5 @@ export class ImgApiService {
     this.page = 1;
   }
 }
+
+export const imgApiService = new ImgApiService();
