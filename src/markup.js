@@ -1,16 +1,16 @@
 import { getRefs } from './get-refs';
-import simpleLightbox from 'simplelightbox';
+import SimpleLightbox from 'simplelightbox';
 
 const refs = getRefs();
 
-const lightbox = new SimpleLightbox('.gallery a', {
+const simplelightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 300,
   enableKeyboard: true,
 });
 
-export function createMarkup(images) {
-  const markup = images.hits
+export function createMarkup(data) {
+  const markup = data
     .map(
       ({
         largeImageURL,
@@ -39,8 +39,5 @@ export function createMarkup(images) {
 
   refs.gallery.insertAdjacentHTML('beforeend', markup);
 
-  lightbox.refresh();
+  simplelightbox.refresh();
 }
-
-
-
