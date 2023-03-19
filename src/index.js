@@ -6,6 +6,7 @@ import { lightbox } from './simplelightbox';
 import './css/styles.css';
 
 const refs = getRefs();
+let currentPage = 1;
 
 refs.btnShowMore.style.display = 'none';
 refs.form.addEventListener('submit', onFormSubmit);
@@ -29,7 +30,7 @@ async function onFormSubmit(e) {
     const { hits, totalHits, total } = await imgApiService.fetchImages();
     createMarkup(hits);
     lightbox.refresh();
-    showNotifications();
+    showNotifications(hits.length, totalHits);
   } catch (error) {
     console.log('error :>> ', error);
   }
@@ -42,7 +43,13 @@ async function onShowMore() {
     const { hits, totalHits, total } = await imgApiService.fetchImages();
     createMarkup(hits);
     lightbox.refresh();
-    showNotifications();
+    if (hits.length < 40) {
+      refs.btnShowMore.style.display = 'none';
+      Notiflix.Notify.info(
+        "We're sorry, but you've reached the end of search results."
+      );
+    }
+    
   } catch (error) {
     console.log('error :>> ', error);
   }
@@ -52,34 +59,16 @@ function clearGallery() {
   refs.gallery.innerHTML = '';
 }
 
-async function showNotifications() {
-  // refs.btnShowMore.style.display = 'none';
+function showNotifications(length, totalHits) {
+  if (length === 0) {
+    Notiflix.Notify.failure(
+      'Sorry, there are no images matching your search query. Please try again.'
+    );
+    return;
+  }
 
-  const { hits, totalHits, total } = await imgApiService.fetchImages();
-
-  imgApiService.fetchImages().then(data => {
-    const curentPage = imgApiService.page - 1;
-    imgApiService.hits = data.totalHits;
-
-    if (total === 1) {
-      Notiflix.Notify.success(`Hooray! We found ${imgApiService.hits} images.`);
-      refs.btnShowMore.style.display = 'block';
-    }
-
-    if (!imgApiService.hits) {
-      refs.btnShowMore.style.display = 'none';
-
-      return Notiflix.Notify.failure(
-        'Sorry, there are no images matching your search query. Please try again.'
-      );
-    }
-
-    if (!data.hits.length) {
-      refs.btnShowMore.style.display = 'none';
-      return Notiflix.Notify.warning(
-        "We're sorry, but you've reached the end of search results."
-      );
-    }
-    createMarkup(hits);
-  });
+  if (currentPage === 1) {
+    refs.btnShowMore.style.display = 'block';
+    Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
+  }
 }
