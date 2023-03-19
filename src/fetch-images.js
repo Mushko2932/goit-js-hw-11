@@ -23,7 +23,6 @@ export class ImgApiService {
       const response = await axios(`${BASE_URL}?${OPTIONS.toString()}`);
       this.incrementPage();
       return response.data;
-    
   }
 
   get query() {

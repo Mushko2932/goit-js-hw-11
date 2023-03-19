@@ -52,7 +52,7 @@ function clearGallery() {
   refs.gallery.innerHTML = '';
 }
 
-async function showNotifications(data) {
+async function showNotifications() {
   // refs.btnShowMore.style.display = 'none';
 
   const { hits, totalHits, total } = await imgApiService.fetchImages();
@@ -61,7 +61,7 @@ async function showNotifications(data) {
     const curentPage = imgApiService.page - 1;
     imgApiService.hits = data.totalHits;
 
-    if (curentPage === 1) {
+    if (total === 1) {
       Notiflix.Notify.success(`Hooray! We found ${imgApiService.hits} images.`);
       refs.btnShowMore.style.display = 'block';
     }
