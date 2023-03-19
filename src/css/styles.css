@@ -39,7 +39,6 @@ input {
   font-size: 18px;
   border: 1px solid rgba(79, 76, 76, 0.3);
   border-radius: 4px;
-  background-color: rgba(0, 0, 0, 0);
 }
 
 button {
@@ -59,7 +58,7 @@ button {
 
 button:hover,
 button:focus {
-  background-color: rgb(93, 184, 137);
+  background-color: rgb(46, 205, 157);
 }
 
 .gallery {
@@ -76,8 +75,8 @@ button:focus {
 .photo-card {
   display: inline-block;
   width: 350px;
-  border: 1px solid rgb(142, 140, 140);
-  border-radius: 10px;
+  border: 1px solid rgb(108, 106, 106);
+  border-radius: 4px;
   background-color: rgb(239, 231, 197);
 }
 
@@ -90,11 +89,11 @@ button:focus {
   display: flex;
   gap: 15px;
   justify-content: center;
-  padding: 10px 20px;
+  padding: 10px;
 
   color: black;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 14px;
   text-align: center;
 }
 
